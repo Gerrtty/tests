@@ -1,3 +1,9 @@
+package tests;
+
+import helpers.GroupHelper;
+import helpers.LoginHelper;
+import helpers.NavigationHelper;
+import helpers.PostHelper;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -5,7 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApplicatonManager {
+public class ApplicatonManager implements AutoCloseable {
 
     private WebDriver driver;
     private Map<String, Object> vars;
@@ -17,7 +23,11 @@ public class ApplicatonManager {
     private NavigationHelper navigationHelper;
     private PostHelper postHelper;
 
-    public ApplicatonManager() {
+    private static ApplicatonManager applicatonManager;
+
+    private static ThreadLocal<ApplicatonManager> applicatonManagerThreadLocal = new ThreadLocal<ApplicatonManager>();
+
+    private ApplicatonManager() {
 
         System.setProperty("webdriver.chrome.driver", "/home/yuliya/Desktop/driver/chromedriver");
         driver = new ChromeDriver();
@@ -31,6 +41,15 @@ public class ApplicatonManager {
         navigationHelper = new NavigationHelper(this, baseUrl);
         postHelper = new PostHelper(this);
 
+    }
+
+    public static ApplicatonManager getInstance() {
+        if (applicatonManagerThreadLocal.get() == null) {
+            ApplicatonManager newInstance = new ApplicatonManager();
+            newInstance.getNavigationHelper().openHomePage();
+            applicatonManagerThreadLocal.set(newInstance);
+        }
+        return applicatonManagerThreadLocal.get();
     }
 
     public void stop() {
@@ -67,5 +86,15 @@ public class ApplicatonManager {
 
     public PostHelper getPostHelper() {
         return postHelper;
+    }
+
+    @Override
+    public void close() {
+        try {
+            applicatonManager.stop();
+        }
+        catch (Exception e) {
+
+        }
     }
 }

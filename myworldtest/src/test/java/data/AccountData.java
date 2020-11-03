@@ -1,3 +1,5 @@
+package data;
+
 public class AccountData {
 
     private String login;

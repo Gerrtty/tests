@@ -1,11 +1,7 @@
-import org.junit.After;
-import org.junit.Before;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+package helpers;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.openqa.selenium.WebDriver;
+import tests.ApplicatonManager;
 
 public class HelperBase {
     protected WebDriver driver;

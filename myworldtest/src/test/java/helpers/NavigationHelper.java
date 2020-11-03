@@ -1,4 +1,7 @@
+package helpers;
+
 import org.openqa.selenium.Dimension;
+import tests.ApplicatonManager;
 
 public class NavigationHelper extends HelperBase {
 
@@ -22,6 +25,10 @@ public class NavigationHelper extends HelperBase {
 
     public void openGroupPage() {
         openUrl("/community/testgroup123/");
+    }
+
+    public void openProfilePage() {
+        openUrl("/mail/gerrtty/");
     }
 
 }

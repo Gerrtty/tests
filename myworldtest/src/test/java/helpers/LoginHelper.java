@@ -1,6 +1,10 @@
+package helpers;
+
+import data.AccountData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import tests.ApplicatonManager;
 
 public class LoginHelper extends HelperBase {
 
