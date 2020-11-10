@@ -16,10 +16,10 @@ public class PostData {
         return body;
     }
 
-    public PostData getCreatedPostData() {
-        PostData postData = new PostData();
-        return postData;
-    }
+//    public PostData getCreatedPostData() {
+//        PostData postData = new PostData();
+//        return postData;
+//    }
 
     public boolean equals(Object o) {
 
@@ -27,5 +27,9 @@ public class PostData {
 
         return postData.body.equals(body);
 
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }

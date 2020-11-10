@@ -23,9 +23,7 @@ public class ApplicatonManager implements AutoCloseable {
     private NavigationHelper navigationHelper;
     private PostHelper postHelper;
 
-    private static ApplicatonManager applicatonManager;
-
-    private static ThreadLocal<ApplicatonManager> applicatonManagerThreadLocal = new ThreadLocal<ApplicatonManager>();
+    private static ThreadLocal<ApplicatonManager> applicatonManagerThreadLocal;
 
     private ApplicatonManager() {
 
@@ -44,9 +42,10 @@ public class ApplicatonManager implements AutoCloseable {
     }
 
     public static ApplicatonManager getInstance() {
-        if (applicatonManagerThreadLocal.get() == null) {
+        if (applicatonManagerThreadLocal == null || applicatonManagerThreadLocal.get() == null) {
             ApplicatonManager newInstance = new ApplicatonManager();
             newInstance.getNavigationHelper().openHomePage();
+            applicatonManagerThreadLocal = new ThreadLocal<>();
             applicatonManagerThreadLocal.set(newInstance);
         }
         return applicatonManagerThreadLocal.get();
@@ -91,7 +90,7 @@ public class ApplicatonManager implements AutoCloseable {
     @Override
     public void close() {
         try {
-            applicatonManager.stop();
+            applicatonManagerThreadLocal.get().stop();
         }
         catch (Exception e) {
 

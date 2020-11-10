@@ -2,9 +2,10 @@ package tests;
 
 import org.junit.Before;
 
+
 public class TestBase {
 
-    protected ApplicatonManager applicatonManager;
+    protected static ApplicatonManager applicatonManager = ApplicatonManager.getInstance();
 
 //    @After
 //    public void tearDown() {
@@ -15,4 +16,5 @@ public class TestBase {
     public void setUp() {
         applicatonManager = ApplicatonManager.getInstance();
     }
+
 }
