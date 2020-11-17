@@ -17,6 +17,8 @@ public class GroupHelper extends HelperBase {
     }
 
     public void testPostInGroup(PostData postData) {
+        applicatonManager.getNavigationHelper().openGroupPage();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.findElement(By.cssSelector(".b-publisher__text")).click();
         driver.findElement(By.cssSelector(".b-publisher__text")).sendKeys(postData.getBody());
         driver.findElement(By.cssSelector(".b-publisher__controls__submit")).click();

@@ -1,9 +1,11 @@
 package tests;
 
+import data.AccountData;
 import helpers.GroupHelper;
 import helpers.LoginHelper;
 import helpers.NavigationHelper;
 import helpers.PostHelper;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -49,6 +51,11 @@ public class ApplicatonManager implements AutoCloseable {
             applicatonManagerThreadLocal.set(newInstance);
         }
         return applicatonManagerThreadLocal.get();
+    }
+
+    public boolean userLogined(AccountData user) {
+        String id = driver.findElement(By.id("PH_user-email")).getText();
+        return id.equals(user.getLogin().toLowerCase() + "@mail.ru");
     }
 
     public void stop() {

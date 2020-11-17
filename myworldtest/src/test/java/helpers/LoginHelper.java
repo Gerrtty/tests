@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import tests.ApplicatonManager;
 
+import java.util.concurrent.TimeUnit;
+
 public class LoginHelper extends HelperBase {
 
     private ApplicatonManager applicatonManager;
@@ -17,19 +19,28 @@ public class LoginHelper extends HelperBase {
 
     public void login(AccountData user) {
 
-        applicatonManager.getNavigationHelper().openHomePage();
-
-        driver.findElement(By.cssSelector(".l-loginform_row:nth-child(2) .l-loginform_row_label_input")).click();
-        {
-            WebElement element = driver.findElement(By.cssSelector(".l-loginform_row:nth-child(2) .l-loginform_row_label_input"));
-            Actions builder = new Actions(driver);
-            builder.doubleClick(element).perform();
+        if (applicatonManager.userLogined(user)) {
+            return;
         }
-        driver.findElement(By.cssSelector(".l-loginform_row_label")).click();
-        driver.findElement(By.cssSelector(".l-loginform_row_label")).sendKeys(user.getLogin());
-        driver.findElement(By.cssSelector(".l-loginform_row_label__100 > .l-loginform_row_label_input")).click();
-        driver.findElement(By.cssSelector(".l-loginform_row_label__100 > .l-loginform_row_label_input")).sendKeys(user.getPassword());
-        driver.findElement(By.cssSelector(".l-loginform_footer > .ui-button-main")).click();
+        else {
+
+            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+            applicatonManager.getNavigationHelper().openHomePage();
+
+            driver.findElement(By.cssSelector(".l-loginform_row:nth-child(2) .l-loginform_row_label_input")).click();
+            {
+                WebElement element = driver.findElement(By.cssSelector(".l-loginform_row:nth-child(2) .l-loginform_row_label_input"));
+                Actions builder = new Actions(driver);
+                builder.doubleClick(element).perform();
+            }
+            driver.findElement(By.cssSelector(".l-loginform_row_label")).click();
+            driver.findElement(By.cssSelector(".l-loginform_row_label")).sendKeys(user.getLogin());
+            driver.findElement(By.cssSelector(".l-loginform_row_label__100 > .l-loginform_row_label_input")).click();
+            driver.findElement(By.cssSelector(".l-loginform_row_label__100 > .l-loginform_row_label_input")).sendKeys(user.getPassword());
+            driver.findElement(By.cssSelector(".l-loginform_footer > .ui-button-main")).click();
+
+        }
     }
 
 }

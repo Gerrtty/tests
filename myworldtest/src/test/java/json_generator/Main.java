@@ -2,7 +2,9 @@ package json_generator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import data.AccountData;
 import data.PostData;
+import settings.Settings;
 import tests.TestBase;
 
 import java.io.File;
@@ -14,6 +16,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 // groups 10 /home/yuliya/Desktop/testdata/testdata.json json
+// auth 2 /home/yuliya/Desktop/testdata/authdata.json json
 
 public class Main {
     public static void main(String[] args) {
@@ -37,6 +40,11 @@ public class Main {
         else if (type.equals("post")) {
             generateForGroups(count, filename, format);
         }
+
+        else if(type.equals("auth")) {
+            generateForAuth(count, filename, format);
+        }
+
         else {
             System.out.println("Unrecognized type of data " + type);
         }
@@ -59,7 +67,7 @@ public class Main {
             e.printStackTrace();
         }
         if (format.equals("json")) {
-            writeGroupsToJsonFile(groups, writer);
+            writeToJsonFile(groups, writer);
         }
         else {
             System.out.println("Unrecognized format" + format);
@@ -67,15 +75,57 @@ public class Main {
         writer.close();
     }
 
-    public static void writeGroupsToJsonFile(List<PostData> groups, PrintWriter writer) {
+    public static void generateForAuth(int count, String filename, String format) {
+
+        Random r = new Random();
+
+        List<AccountData> accounts = new ArrayList<>();
+
+        // Invalid data
+        for (int i = 0; i < count; i++) {
+            accounts.add(new AccountData(generateRandomString(r.nextInt(10)),
+                    generateRandomString(r.nextInt(10))));
+
+        }
+
+        // Valid data
+        accounts.add(new AccountData(Settings.getLogin(), Settings.getPassword()));
+
+        File file = new File(filename);
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (format.equals("json")) {
+            writeToJsonFile(accounts, writer);
+        }
+        else {
+            System.out.println("Unrecognized format" + format);
+        }
+        writer.close();
+    }
+
+    public static void writeToJsonFile(List<?> list, PrintWriter writer) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String out = objectMapper.writeValueAsString(groups);
+            String out = objectMapper.writeValueAsString(list);
             writer.println(out);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
+
+//    public static void writeGroupsToJsonFile(List<PostData> groups, PrintWriter writer) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        try {
+//            String out = objectMapper.writeValueAsString(groups);
+//            writer.println(out);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public static String generateRandomString(int length) {
         char[] chars = "abcdefghijklmnopqrstuvwxyz0123456789.,/';[]{}-_+=!@#$%^&*()№;:?".toCharArray();
